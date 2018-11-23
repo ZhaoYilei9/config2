@@ -1,0 +1,43 @@
+
+Jenkins与Github集成
+
+Jenkins目前是手动进行项目构建的，如何才能做到Github并持续集成呢？
+
+配置前要求：
+
+1.Jenkins已经安装Github插件
+
+2.Jenkins服务器已经拥有一个公网IP地址
+
+第一步：配置Jenkins全局
+
+尽管Jenkins已经配置与Github代码库进行通信，但我们需从Jenkins手动启动构建，如需启动自动构建，Jenkins需要在Hook URL中监听Github的Post请求，才会进行自动构建
+
+要获取Jenkins的Hook URL，打开Jenkins首页控制台--》系统管理
+
+在Github插件的配置中，点击“高级”按钮
+
+启用Hook URL，并将Hook URL复制出来，并保存刚才的设置
+
+第二步：配置Github项目仓库
+
+还需要配置Github项目仓库，因为Github经常有代码处理动作，需要配置Github项目仓库在处理这些动作的同时会发送信号至Jenkins，才使用Jenkins自动构建
+
+在"Webhooks"选项卡中，点击"Add webhook"
+
+将在Jenkins生成的Hook URL填入至Payload URL中，另外，选择自主事件
+
+以Push为例，并保存，即当Github收到了客户端有Push动作时，会触发一个Hook
+
+保存WebHook之后
+
+第三步：配置Jenkins项目
+
+最后需要配置Jenkins项目触发的条件，到此刻，Github遇到Push事件时，Jenkins会收到通知，但Jenkins应该做什么呢？此步骤就是做最后的构建的动作。
+
+选择构建触发器，并且选择Github Hook触发
+
+第四步，在本地代码库做一些修改，并Push至Github后，查看Jenkins构建效果
+
+本例虽然第三次构建出现错误，但Github Hook的路是通的
+
